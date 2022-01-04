@@ -1,0 +1,28 @@
+1. view 
+	//////// user, profile, class
+	//////// user, study, subject
+	message, user
+	class, subject, user, teach
+	//////// users, prrofile
+2, hàm
+	/////// điểm trung bình, 
+	chuyển đổi số chữ vv
+	hiển thị tin nhắn
+	//////// lấy ra các môn học
+	//////// đếm số hs từng lớp, khối(sĩ số)
+	lấy ra phần tên của người dùng
+
+3. thủ tục
+	lấy ra tất cả các hs mà gv dạy	
+	lấy ra sĩ số 1 lớp > x
+	số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày nào đó
+	lấy ra xếp hạng các lớp có điểm tb cao
+
+4. trigger
+	////////thêm user mới -> thêm profile
+	thêm user mới -> thêm study 
+	sửa điểm -> tự tính lại tổng điểm
+	mật khẩu mặc định
+	
+
+Thêm vào 1 trường là hạnh kiểm, 

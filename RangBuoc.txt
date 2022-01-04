@@ -1,0 +1,28 @@
+- học sinh được thêm vào thì tạo bảng điểm cho học đó trong lớp
+- học sinh khi được thêm vào bắt buộc phải thuộc một lớp
+- Phụ huynh khi được thêm vào bắt buộc phải là phụ huynh của một học sinh nhất định
+- Mỗi học sinh chỉ đc theo dõi bởi một phụ huynh
+	()VD trigger: khi thêm phụ huynh mà UserChild đã tồn tại hoặc UserChild không phải là một học sinh thì hiển thị lỗi
+- chỉ có học sinh mới có trường userclass
+- chỉ có phụ huynh mới có trường userchild
+- không lưu mess k có nội dung
+- Mỗi giáo viên dạy nhiều lớp
+- Mỗi giáo viên dạy các môn không trùng lặp cho cùng một lớp
+- FromUserID và ToUserID chỉ nhận ID của giáo viên và phụ huynh
+- update lại tổng điểm cho học sinh mỗi khi thay đổi điểm
+- thêm tài khoản 
+- xóa tài khoản
+- Đếm điểm
+- Đếm sĩ số từng khối
+
+##Thêm tổng điểm cho bảng transcript##
+
+View:
+Giáo viên: thông tin cá nhân, lớp dạy, môn dạy
+học sinh: thông tin cá nhân, lớp học, phụ huynh
+phụ huynh: thông tin cá nhân, học sinh, lớp trực thuộc
+điểm: học sinh, lớp, điểm
+
+
+
+
