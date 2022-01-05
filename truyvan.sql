@@ -15,10 +15,10 @@ select * from v_ChiTietNguoiDung
 
 --Tạo view v_lophoc để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
 -- cofe_one, Coef_two, Cofe_three, Summary, Conduct
-create view v_lophoc(UserID, UserName, ClassName, SubjectName, SubjectType, Cofe_one, Coef_two, Cofe_three, Summary, Conduct)
+create view v_lophoc(UserID, UserName, ClassName, SubjectName, SubjectType, Cofe_one, Coef_two, Cofe_three, Summary)
 as
 	select u.UserID, u.UserName, ClassName, sb.SubjectName, sb.SubjectType, st.Coef_one, st.Coef_two, 
-			st.Coef_three, st.Summary, st.Conduct
+			st.Coef_three, st.Summary
 	from users as u, class as c, subjects as sb, study as st
 	where u.ClassID=c.ClassID and st.UserID=u.UserID and st.SubjectID=sb.SubjectID
 
@@ -30,17 +30,17 @@ select * from v_lophoc
 --Viết một hàm f_DiemTrungBinh trả về một bảng chi tiết họ tên, lớp, số điểm trung bình của 1 học sinh 
 	--với DiemTrungBinh = ((Coef_one * 1 + Coef_two * 2 + Coef_three * 3)/6)
 	--với UserID là tham số truyền vào
-create function f_DiemTrungBinh (@UserID varchar(4))
+create function f_DiemTrungBinh (@UserID varchar(4), @SubjectID varchar(10))
 returns float
 as
 	begin
 		declare @DiemTrungBinh float
 		select @DiemTrungBinh = ((Coef_one * 1 + Coef_two * 2 + Coef_three * 3)/6)
-		from users, study where users.UserID=@UserID and users.UserID = study.UserID
+		from study where UserID=@UserID and SubjectID = @SubjectID
 		return @DiemTrungBinh
 	end
 
-select dbo.f_DiemTrungBinh('1001')
+select dbo.f_DiemTrungBinh('1001', 'Van10')
 
 
 --Viết một hàm f_DiemTrungBinh trả về một bảng chi tiết họ tên, lớp, điểm số 1, điểm số 2, điểm số 3 và số điểm trung bình của 1 học sinh 
@@ -58,39 +58,32 @@ as
 select * from dbo.f_Diem('1001')
 
 -- Hàm đếm sĩ số của lớp tham số truyền vào là 1 ID lớp
--- Viết một thủ tục đếm số học sinh trong 1 lớp theo thứ tự tăng dần
--- CẦN SỬA ĐỔI
 
-create function f_SiSoHocSinh()
-returns @SiSo table(IDLop varchar(10), TenLop nvarchar(10), SiSo int)
+create function f_SiSoHocSinh(@ClassID varchar(10))
+returns int
 as
 begin
-	insert into @SiSo
-	select class.ClassID, class.ClassName, count(UserID) as SiSo from users, class 
-	group by class.ClassID, ClassName 
-	order by SiSo asc
-	return
+	declare @SiSo int;
+	select @SiSo = count(*) from users where ClassID = @ClassID;
+	return @SiSo
 end
 	
-select * from dbo.f_SiSoHocSinh()
+select dbo.f_SiSoHocSinh('2020A1')
 
 
 
 --PROCEDURE
---Viết 1 thủ tục sp_SiSoNhieu đưa ra danh sách các lớp có sĩ số nhiều 
---hơn một giá trị x, với x là tham số đưa vào. Danh sách sản phẩm được đưa ra dưới dạng con trỏ.
-Create or alter procedure sp_SiSoNhieu
+-- Viết một thủ tục đếm số học sinh trong 1 lớp theo thứ tự tăng dần
+Create procedure sp_SiSoNhieu
 @SiSo int, @dsss cursor varying output
 as begin
 set @dsss=cursor for
-	select class.ClassID, class.ClassName, count(UserID) as SiSo from users, class 
-	group by class.ClassID, ClassName 
-	having count(UserID)>@SiSo
+	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) >= @SiSo order by SiSo asc
 open @dsss
 end
 
 declare @contro_sp cursor
-exec sp_SiSoNhieu 30, @contro_sp out
+exec sp_SiSoNhieu 0, @contro_sp out
 Fetch Next from @contro_sp
 while (@@FETCH_STATUS = 0)
 begin
@@ -99,16 +92,16 @@ end
 close @contro_sp
 deallocate @contro_sp
 
---Viết 1 thủ tục số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày
+--2.Viết 1 thủ tục số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày
 Create proc sp_SoLuongTinNhan
- @NgayDau date, @NgayCuoi date, @TongTinNhan int out
- as begin
- Select @TongTinNhan = Sum(MessContent) from messenger where MessTime>=@ngaydau and MessTime<=@ngaycuoi
- end
+ @UserID nvarchar(4), @NgayDau date, @NgayCuoi date, @TongTinNhan int out
+ as 
+	begin
+		Select @TongTinNhan = Count(*) from messenger 
+		where FromID = @UserID and MessTime>=@ngaydau and MessTime<=@ngaycuoi
+	end
  
- declare @tn1 int, @tn2 int
- exec sp_SoLuongTinNhan '2000-05-26', '2000-8-15', @tn1 out
- exec sp_SoLuongTinNhan '2000-08-15', '2000-11-01', @tn2 out
-
- drop proc sp_SoLuongTinNhan
+ declare @tn1 int;
+ exec sp_SoLuongTinNhan '1001', '2021-1-12', '2021-12-12', @tn1 out
+ print  @tn1
 

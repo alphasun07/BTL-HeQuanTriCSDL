@@ -23,6 +23,13 @@ insert into subjects (SubjectID, SubjectName, SubjectType) values
 ('anh12', N'Anh 12', N'Khoa ngoại ngữ'),
 ('phap12', N'Pháp 12', N'Khoa ngoại ngữ');
 
+INSERT INTO messenger(FromID, ToID, MessContent) VALUES
+('0001', '1001', N'Thông báo hoãn thi do covid 19'),
+('1001', '0001', N'Cập nhật thời khóa biểu'),
+('0001', '1001', N'alo alo'),
+('1001', '0001', N't nè'),
+('0001', '1001', N'hsi hí ');
+
 insert into teach values 
 ('0001', 'Van10', '2021A1'),
 ('0001', 'toan10', '2021A1'),

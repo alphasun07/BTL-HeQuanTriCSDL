@@ -1,4 +1,4 @@
-use master
+﻿use master
 drop database thpt_vap
 create database thpt_vap
 use thpt_vap
@@ -35,6 +35,7 @@ create table profiles(
 	ProGender Nvarchar(20),
 	ProBirth Date,
 	ProAva varchar(60),
+	evaluate nvarchar(50) DEFAULT N'Chưa có đánh giá',
 	primary key (UserID),
 	foreign key (UserID) references users(UserID),
 )
@@ -63,7 +64,6 @@ create table study(
 	Coef_two float,
 	Coef_three float,
 	Summary float,
-	Conduct Nvarchar(20),
 	primary key (UserID, SubjectID),
 	foreign key (UserID) references users(UserID),
 	foreign key (SubjectID) references subjects(SubjectID),
@@ -73,7 +73,7 @@ CREATE TABLE messenger (
   MessID int NOT NULL IDENTITY(1,1),
   FromID varchar(4) NOT NULL,
   ToID varchar(4) NOT NULL,
-  MessContent text NOT NULL,
+  MessContent Nvarchar(255) NOT NULL,
   MessTime datetime NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (MessID,FromID,ToID),
   FOREIGN KEY (ToID) REFERENCES users(UserID),
