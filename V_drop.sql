@@ -1,8 +1,4 @@
 use thpt_vap;
-drop trigger add_user;
-drop trigger del_user;
-drop trigger update_scores;
-drop trigger del_profile
 
 drop view v_users_profiles;
 drop view v_lophoc;
@@ -15,6 +11,11 @@ drop function f_Diem;
 drop function f_SiSoHocSinh;
 drop function f_evaluate;
 drop function get_avgAllScore;
+
+drop trigger add_user;
+drop trigger del_user;
+drop trigger update_scores;
+drop trigger del_profile
 
 drop procedure sp_SiSoNhieu;
 drop procedure sp_SoLuongTinNhan;
