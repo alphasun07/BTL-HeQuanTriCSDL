@@ -14,8 +14,8 @@
 
 3. thủ tục
 	lấy ra tất cả các hs mà gv dạy	
-	lấy ra sĩ số 1 lớp > x
-	số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày nào đó
+	////////lấy ra sĩ số 1 lớp > x
+	////////số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày nào đó
 	lấy ra xếp hạng các lớp có điểm tb cao
 
 4. trigger
