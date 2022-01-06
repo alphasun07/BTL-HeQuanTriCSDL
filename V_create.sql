@@ -54,6 +54,7 @@ insert into v_users_profiles(UserID, UserName, UserPassword, UserEmail, UserCode
 values ('0001', N'motcaiten', 'abc', 'motcaimail@gmail.com', '00000000', N'Giáo viên',  N'Một Cái Tên')
 
 
+alter table Profiles Add Constraint KTGioiTinh Check (ProGender=N'Nam' or ProGender = N'Nữ')
 
 -- Xóa user -> xóa profile, xóa message
 -- Học sinh -> xóa điểm

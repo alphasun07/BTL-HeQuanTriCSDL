@@ -59,8 +59,8 @@ as
 
 select * from dbo.f_Diem('1001')
 
--- Hàm đếm sĩ số của lớp tham số truyền vào là 1 ID lớp
 
+-- Hàm đếm sĩ số của lớp tham số truyền vào là 1 ID lớp
 create function f_SiSoHocSinh(@ClassID varchar(10))
 returns int
 as
@@ -105,4 +105,44 @@ Create proc sp_SoLuongTinNhan
  print 'Số lượng tin nhắn là: ' +  @tn1
 
  drop proc sp_SoLuongTinNhan
+
+
+ --TRIGGER
+ 
+-- Xóa user -> xóa profile, xóa message
+-- Học sinh -> xóa điểm
+-- Giáo viên -> xóa teach
+ create trigger del_user
+on users
+instead of delete as
+	begin
+		declare @UserID varchar(4), @Role Nvarchar(20);
+		select @UserID = UserID, @Role = UserRole from deleted;
+
+		delete from profiles where UserID = @UserID;
+		delete from messenger where FromID = @UserID or ToID = @UserID;
+		if @Role = N'Học sinh'
+			begin
+				delete from study where UserID = @UserID;
+			end
+		else if @Role = N'Giáo viên'
+			begin
+				delete from teach where UserID = @UserID;
+			end
+		delete from users where UserID = @UserID;
+	end
+
+delete from users where UserName = 'haicaiten'
+
+
+-- Sua diem -> sua lai tong diem
+create trigger update_scores
+on study
+after update as
+	begin
+		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
+		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
+	end
+
+update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '1001' and SubjectID = N'Toan10';
 
