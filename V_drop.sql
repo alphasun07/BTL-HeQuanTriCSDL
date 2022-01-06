@@ -1,23 +1,22 @@
 use thpt_vap;
-
-drop view v_users_profiles;
-drop view v_lophoc;
-drop view v_ChiTietNguoiDung;
+--V
 drop view v_studentsOfTeachers;
-
+drop view v_users_profiles;
 drop function get_subjectsOfClass;
-drop function f_DiemTrungBinh;
-drop function f_Diem;
-drop function f_SiSoHocSinh;
-drop function f_evaluate;
 drop function get_avgAllScore;
-
+drop function f_evaluate;
 drop trigger add_user;
-drop trigger del_user;
-drop trigger update_scores;
-drop trigger del_profile
+drop trigger del_profile;
+drop procedure sp_searchMatchMess;
+drop procedure sp_updateEvaluate;
 
+--A
+drop view v_ChiTietNguoiDung;
+drop view v_lophoc;
+drop function f_DiemTrungBinh;
+drop function f_SiSoHocSinh;
+drop function f_Diem;
+drop trigger update_scores;
+drop trigger del_user;
 drop procedure sp_SiSoNhieu;
 drop procedure sp_SoLuongTinNhan;
-drop procedure sp_updateEvaluate;
-drop procedure sp_searchMatchMess;

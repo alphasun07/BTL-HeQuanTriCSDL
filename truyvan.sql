@@ -15,9 +15,9 @@ select * from v_ChiTietNguoiDung
 
 --2.Tạo view v_lophoc để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
 -- cofe_one, Coef_two, Cofe_three, Summary, Conduct
-create view v_lophoc(UserID, UserName, ClassName, SubjectName, SubjectType, Cofe_one, Coef_two, Cofe_three, Summary)
+create view v_lophoc(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
 as
-	select u.UserID, u.UserName, ClassName, sb.SubjectName, sb.SubjectType, st.Coef_one, st.Coef_two, 
+	select u.UserID, u.UserName, c.ClassID, ClassName, sb.SubjectID, sb.SubjectName, sb.SubjectType, st.Coef_one, st.Coef_two, 
 			st.Coef_three, st.Summary
 	from users as u, class as c, subjects as sb, study as st
 	where u.ClassID=c.ClassID and st.UserID=u.UserID and st.SubjectID=sb.SubjectID
@@ -41,18 +41,19 @@ as
 		return @DiemTrungBinh
 	end
 
-select dbo.f_DiemTrungBinh('1001', 'Van10')
+select dbo.f_DiemTrungBinh('1001', 'toan10')
 
 
 --2.Viết một hàm f_DiemTrungBinh trả về một bảng chi tiết họ tên, lớp, điểm số 1, điểm số 2, điểm số 3 và số điểm trung bình của 1 học sinh 
 	--với UserID là tham số truyền vào
 create function f_Diem(@UserID nvarchar(4))
-returns @Diem table(HoVaTen nvarchar(60), Lop nvarchar(10), Coef_one float, Coef_tow float, Coef_three float, DiemTrungBinh float)
+returns @Diem table(HoVaTen nvarchar(60), Mon nvarchar(20), Lop nvarchar(10), Coef_one float, Coef_tow float, Coef_three float, DiemTrungBinh float)
 as
 	begin
 		insert into @Diem
-		select users.UserName, class.ClassName, st.Coef_one, st.Coef_two, st.Coef_three, ((Coef_one * 1 + Coef_two * 2 + Coef_three * 3)/6)
-		from users, study as st, class where users.UserID=@UserID and users.UserID = st.UserID and users.ClassID = class.ClassID;
+		select UserName, SubjectID, ClassName, Coef_one, 
+		Coef_two, Coef_three, dbo.f_DiemTrungBinh(UserID, SubjectID)
+		from v_lophoc where UserID=@UserID;
 		return
 	end
 
