@@ -13,13 +13,13 @@ select * from v_users_profiles
 
 
 -- Hàm lấy ra tất cả các môn học được dạy trong một lớp (tham số đầu vào là ID lớp)
-create function get_subjectsOfClass(@UserID varchar(4), @ClassID varchar(10))
+create function get_subjectsOfClass(@ClassID varchar(10))
 returns @subjectOfClass table
-(UserID varchar(4), SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
+(SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
 as
 	begin
 		insert into @subjectOfClass
-		select UserID = @UserID, subjects.SubjectID, SubjectName, SubjectType from subjects, teach
+		select subjects.SubjectID, SubjectName, SubjectType from subjects, teach
 		where ClassID = @ClassID and teach.SubjectID = subjects.subjectID
 		return
 	end
@@ -42,8 +42,8 @@ instead of insert as
 		
 		if(@UserRole = N'Học sinh')
 			begin
-				insert into study(UserID, SubjectID) select UserID, SubjectID 
-				from dbo.get_subjectsOfClass(@UserID, @ClassID);
+				insert into study(UserID, SubjectID) select UserID = @UserID, SubjectID 
+				from dbo.get_subjectsOfClass(@ClassID);
 			end
 	end
 
@@ -95,12 +95,14 @@ update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '100
 
 
 
--- Xóa Thông tin cá nhân -> không thể xóa
+-- Xóa Thông tin cá nhân -> xóa người dùng
 create trigger del_profile
 on profiles
-instead of delete as
+after delete as
 	begin
-		print N'Không thể xóa thông tin cá nhân của người dùng';
+		declare @UserID varchar(4);
+		select @UserID = UserID from deleted;
+		delete from users where UserID = @UserID;
 	end
 
 delete from profiles where UserID = '0001';
@@ -198,6 +200,12 @@ while (@@FETCH_STATUS = 0)
 	end
 close @matchedList;
 deallocate @matchedList;
+
+--View học sinh của lớp
+create view v_studentsOfClass(CLassID, ClassName, UserID, Name, Birth, Gender, Address, Avatar)
+as select c.CLassID, c.ClassName, u.UserID, p.ProName, p.ProBirth, p.ProGender, p.ProAddress, p.ProAva
+from class as c, users as u, profiles as p 
+where c.ClassID = u.ClassID and u.UserID = p.UserID
 
 select * from users;
 select * from profiles;

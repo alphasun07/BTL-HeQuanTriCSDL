@@ -11,8 +11,8 @@ drop procedure sp_searchMatchMess;
 drop procedure sp_updateEvaluate;
 
 --A
-drop view v_ChiTietNguoiDung;
-drop view v_lophoc;
+drop view v_studentsOfClass;
+drop view v_scoresOfStudent;
 drop function f_DiemTrungBinh;
 drop function f_SiSoHocSinh;
 drop function f_Diem;

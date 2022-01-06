@@ -1,9 +1,24 @@
 ﻿use master
 drop database thpt_vap
+-- Tạo cơ sở dũ liệu, file dữ liệu + file nhật ký
 create database thpt_vap
+on primary (
+Name=QLNA_data,
+Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTL\THPT_data.mdf',
+size=10MB,
+maxsize=50MB,
+filegrowth =2MB)
+
+log on (
+Name=QLNA_log,
+Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTL\THPT_log.ldf',
+size=5MB,
+maxsize=20MB,
+filegrowth =1MB);
+
 use thpt_vap
 
-
+--Tạo bảng class
 CREATE TABLE class (
   ClassID varchar(10) NOT NULL,
   ClassName Nvarchar(10) NOT NULL,
@@ -12,6 +27,7 @@ CREATE TABLE class (
   UNIQUE  (ClassName)
 )
 
+--Tạo bảng users
 CREATE TABLE users (
   UserID varchar(4) NOT NULL,
   UserName Nvarchar(60) NOT NULL,
@@ -27,6 +43,7 @@ CREATE TABLE users (
   FOREIGN KEY (ClassID) REFERENCES class (ClassID)
 )
 
+--Tạo bảng profiles
 create table profiles(
 	UserID varchar(4) NOT NULL,
 	ProName Nvarchar(60) NOT NULL,
@@ -40,6 +57,7 @@ create table profiles(
 	foreign key (UserID) references users(UserID),
 )
 
+--Tạo bảng subjects
 create table subjects(
 	SubjectID varchar(10) NOT NULL,
 	SubjectName Nvarchar(60) NOT NULL, 
@@ -47,6 +65,7 @@ create table subjects(
 	primary key (SubjectID),
 )
 
+--Tạo bảng teach
 create table teach(
 	UserID varchar(4) Not Null,
 	SubjectID varchar(10) Not Null,
@@ -57,6 +76,7 @@ create table teach(
 	foreign key (ClassID) references class(ClassID)
 )
 
+--Tạo bảng study
 create table study(
 	UserID varchar(4) Not Null,
 	SubjectID varchar(10) Not Null,
@@ -69,6 +89,7 @@ create table study(
 	foreign key (SubjectID) references subjects(SubjectID),
 )
 
+--Tạo bảng messenger
 CREATE TABLE messenger (
   MessID int NOT NULL IDENTITY(1,1),
   FromID varchar(4) NOT NULL,

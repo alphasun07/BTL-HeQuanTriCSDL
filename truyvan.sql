@@ -15,14 +15,14 @@ select * from v_ChiTietNguoiDung
 
 --2.Tạo view v_lophoc để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
 -- cofe_one, Coef_two, Cofe_three, Summary, Conduct
-create view v_lophoc(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
+create view v_scoresOfStudent(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
 as
 	select u.UserID, u.UserName, c.ClassID, ClassName, sb.SubjectID, sb.SubjectName, sb.SubjectType, st.Coef_one, st.Coef_two, 
 			st.Coef_three, st.Summary
 	from users as u, class as c, subjects as sb, study as st
 	where u.ClassID=c.ClassID and st.UserID=u.UserID and st.SubjectID=sb.SubjectID
 
-select * from v_lophoc
+select * from v_scoresOfStudent
 
 
 
@@ -53,7 +53,7 @@ as
 		insert into @Diem
 		select UserName, SubjectID, ClassName, Coef_one, 
 		Coef_two, Coef_three, dbo.f_DiemTrungBinh(UserID, SubjectID)
-		from v_lophoc where UserID=@UserID;
+		from v_scoresOfStudent where UserID=@UserID;
 		return
 	end
 
@@ -77,6 +77,7 @@ drop function f_SiSoHocSinh
 
 
 --PROCEDURE
+--1. Thủ tục lấy ra sĩ số của các lớp có sĩ số > x(với x là đầu vào) dưới dạng con trỏ
 Create procedure sp_SiSoNhieu
 @SiSo int, @dsss cursor varying output
 as begin
@@ -85,6 +86,9 @@ set @dsss=cursor for
 open @dsss
 end
 
+declare @contro_sp cursor;
+exec sp_SiSoNhieu 0, @contro_sp out;
+Fetch Next from @contro_sp
 begin
 	Fetch Next from @contro_sp
 end
