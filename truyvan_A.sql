@@ -1,19 +1,15 @@
 ﻿--VIEW
 
---1.Tạo view v_ChiTietNguoiDung để hiển thị chi tiết thông tin gồm UserID, UserName, UserPassword, UserEmail, UseStatus,  
---UserRole, ProPhone, ProAddress, Progender, ProBirth, ClassName,  
-Create view v_ChiTietNguoiDung(UserID, UserName, ProName, UserPassword, UserEmail, UserStatus, UserCode,
-						UserRole, ProPhone, ProAddress, Progender, ProBirth, ClassName)
-as
-	select u.UserID, u.UserName, p.ProName, u.UserPassword, u.UserEmail, u.UserStatus, u.UserCode, u.UserRole, p.ProPhone, p.ProAddress,
-	p.Progender, p.ProBirth, c.ClassName
-	from users as u, class as c, profiles as p
-	where u.UserID=p.UserID and u.ClassID=c.ClassID
 
-select * from v_ChiTietNguoiDung
+--View học sinh của lớp
+create view v_studentsOfClass(CLassID, ClassName, UserID, Name, Birth, Gender, Address, Avatar)
+as select c.CLassID, c.ClassName, u.UserID, p.ProName, p.ProBirth, p.ProGender, p.ProAddress, p.ProAva
+from class as c, users as u, profiles as p 
+where c.ClassID = u.ClassID and u.UserID = p.UserID
 
+select * from v_studentsOfClass
 
---2.Tạo view v_lophoc để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
+--2.Tạo view v_scoresOfStudent để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
 -- cofe_one, Coef_two, Cofe_three, Summary, Conduct
 create view v_scoresOfStudent(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
 as
@@ -21,6 +17,7 @@ as
 			st.Coef_three, st.Summary
 	from users as u, class as c, subjects as sb, study as st
 	where u.ClassID=c.ClassID and st.UserID=u.UserID and st.SubjectID=sb.SubjectID
+
 
 select * from v_scoresOfStudent
 
@@ -120,6 +117,7 @@ Create proc sp_SoLuongTinNhan
 on users
 instead of delete as
 	begin
+		print 'Xóa thành công'
 		declare @UserID varchar(4), @Role Nvarchar(20);
 		select @UserID = UserID, @Role = UserRole from deleted;
 
@@ -144,6 +142,7 @@ create trigger update_scores
 on study
 after update as
 	begin
+		print 'Cập nhật điểm thành công'
 		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
 		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
 	end
