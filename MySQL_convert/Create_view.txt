@@ -1,0 +1,19 @@
+create view v_studentsOfTeachers(teacherID, studentID, SubjectID, summary) as
+select distinct teach.UserID as teacherID, users.UserID as studentID, study.SubjectID, study.Summary 
+from teach, users, study where teach.ClassID = users.ClassID and users.UserID = study.UserID;
+
+create view v_users_profiles(UserID, UserName, UserPassword, UserEmail, 
+UserStatus, UserCode, UserRole, ClassID, UserID_, ProName, ProPhone, ProAddress, ProGender, ProBirth, ProAva, Evaluate)
+as select * from users, profiles where users.UserID = profiles.UserID;
+
+create view v_studentsOfClass(CLassID, ClassName, UserID, Name, Birth, Gender, Address, Avatar)
+as select c.CLassID, c.ClassName, u.UserID, p.ProName, p.ProBirth, p.ProGender, p.ProAddress, p.ProAva
+from class as c, users as u, profiles as p 
+where c.ClassID = u.ClassID and u.UserID = p.UserID;
+
+create view v_scoresOfStudent(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
+as
+	select u.UserID, u.UserName, c.ClassID, ClassName, sb.SubjectID, sb.SubjectName, sb.SubjectType, st.Coef_one, st.Coef_two, 
+			st.Coef_three, st.Summary
+	from users as u, class as c, subjects as sb, study as st
+	where u.ClassID=c.ClassID and st.UserID=u.UserID and st.SubjectID=sb.SubjectID;

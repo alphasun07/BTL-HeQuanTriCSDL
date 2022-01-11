@@ -1,0 +1,19 @@
+DELIMITER |
+create function f_DiemTrungBinh (UserID_ varchar(4), SubjectID_ varchar(10))
+returns float
+	begin
+		declare DiemTrungBinh float;
+		select ((study.Coef_one * 1 + study.Coef_two * 2 + study.Coef_three * 3)/6) into DiemTrungBinh
+		from study where study.UserID=UserID_ and study.SubjectID = SubjectID_;
+		return DiemTrungBinh;
+	end|
+
+DELIMITER |
+create function f_SiSoHocSinh(ClassID_ varchar(10))
+returns int
+begin
+	declare SiSo int;
+	select count(*) into SiSo from users where ClassID = ClassID_;
+	return SiSo;
+end|
+

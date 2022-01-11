@@ -6,7 +6,7 @@ drop function get_subjectsOfClass;
 drop function get_avgAllScore;
 drop function f_evaluate;
 drop trigger add_user;
-drop trigger del_profile;
+drop trigger update_users;
 drop procedure sp_searchMatchMess;
 drop procedure sp_updateEvaluate;
 

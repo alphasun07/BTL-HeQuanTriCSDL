@@ -53,6 +53,9 @@ values ('1001', N'haicaiten', 'abc', 'haicaimail@gmail.com', '00000000', N'Học
 insert into v_users_profiles(UserID, UserName, UserPassword, UserEmail, UserCode, UserRole, ProName) 
 values ('0001', N'motcaiten', 'abc', 'motcaimail@gmail.com', '00000000', N'Giáo viên',  N'Một Cái Tên')
 
+insert into v_users_profiles(UserID, UserName, UserPassword, UserEmail, UserCode, UserRole, ProName) 
+values ('0002', N'bacaiten', 'abc', 'bacaimail@gmail.com', '00000000', N'Giáo viên',  N'Ba Cái Tên')
+
 
 alter table Profiles Add Constraint KTGioiTinh Check (ProGender=N'Nam' or ProGender = N'Nữ')
 
@@ -97,16 +100,18 @@ update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '100
 
 
 -- Xóa Thông tin cá nhân -> xóa người dùng
-create trigger del_profile
-on profiles
-after delete as
+create trigger update_users
+on users
+for update as
 	begin
-		declare @UserID varchar(4);
-		select @UserID = UserID from deleted;
-		delete from users where UserID = @UserID;
+		if update(UserName)
+			begin
+				print N'Không thể thay đổi tên tài khoản';
+				rollback transaction
+			end
 	end
 
-delete from profiles where UserID = '0001';
+update users set UserName = 'iamveoveo' where UserID = '0001';
 
 
 

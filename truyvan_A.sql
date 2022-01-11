@@ -117,7 +117,7 @@ Create proc sp_SoLuongTinNhan
 on users
 instead of delete as
 	begin
-		print 'Xóa thành công'
+		print N'Xóa thành công'
 		declare @UserID varchar(4), @Role Nvarchar(20);
 		select @UserID = UserID, @Role = UserRole from deleted;
 
@@ -142,7 +142,7 @@ create trigger update_scores
 on study
 after update as
 	begin
-		print 'Cập nhật điểm thành công'
+		print N'Cập nhật điểm thành công'
 		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
 		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
 	end

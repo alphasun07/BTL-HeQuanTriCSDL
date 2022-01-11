@@ -1,71 +1,51 @@
-﻿use master
-drop database thpt_vap
--- Tạo cơ sở dũ liệu, file dữ liệu + file nhật ký
-create database thpt_vap
-on primary (
-Name=QLNA_data,
-Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTTH\THPT_data.mdf',
-size=10MB,
-maxsize=50MB,
-filegrowth =2MB)
 
-log on (
-Name=QLNA_log,
-Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTTH\THPT_log.ldf',
-size=5MB,
-maxsize=20MB,
-filegrowth =1MB);
-
-use thpt_vap
-
---Tạo bảng class
 CREATE TABLE class (
   ClassID varchar(10) NOT NULL,
-  ClassName Nvarchar(10) NOT NULL,
+  ClassName varchar(10) NOT NULL,
   ClassGrade int NOT NULL,
   PRIMARY KEY (ClassID),
   UNIQUE  (ClassName)
-)
+);
 
---Tạo bảng users
+
 CREATE TABLE users (
   UserID varchar(4) NOT NULL,
-  UserName Nvarchar(60) NOT NULL,
+  UserName varchar(60) NOT NULL,
   UserPassword varchar(255) NOT NULL,
   UserEmail varchar(100) DEFAULT NULL,
   UserStatus int NOT NULL DEFAULT 0,
   UserCode varchar(8) NOT NULL,
-  UserRole Nvarchar(20) NOT NULL,
+  UserRole varchar(20) NOT NULL,
   ClassID varchar(10) DEFAULT NULL,
   PRIMARY KEY (UserID),
   UNIQUE (UserName),
   UNIQUE (UserEmail),
   FOREIGN KEY (ClassID) REFERENCES class (ClassID)
-)
+);
 
---Tạo bảng profiles
+
 create table profiles(
 	UserID varchar(4) NOT NULL,
-	ProName Nvarchar(60) NOT NULL,
+	ProName varchar(60) NOT NULL,
 	ProPhone varchar(20),
-	ProAddress Nvarchar(150),
-	ProGender Nvarchar(20),
+	ProAddress varchar(150),
+	ProGender varchar(20),
 	ProBirth Date,
 	ProAva varchar(60),
-	evaluate nvarchar(50) DEFAULT N'Chưa có đánh giá',
+	evaluate varchar(50) DEFAULT 'Chưa có đánh giá',
 	primary key (UserID),
-	foreign key (UserID) references users(UserID),
-)
+	foreign key (UserID) references users(UserID)
+);
 
---Tạo bảng subjects
+
 create table subjects(
 	SubjectID varchar(10) NOT NULL,
-	SubjectName Nvarchar(60) NOT NULL, 
-	SubjectType Nvarchar(60),
-	primary key (SubjectID),
-)
+	SubjectName varchar(60) NOT NULL, 
+	SubjectType varchar(60),
+	primary key (SubjectID)
+);
 
---Tạo bảng teach
+
 create table teach(
 	UserID varchar(4) Not Null,
 	SubjectID varchar(10) Not Null,
@@ -74,9 +54,9 @@ create table teach(
 	foreign key (UserID) references users(UserID),
 	foreign key (SubjectID) references subjects(SubjectID),
 	foreign key (ClassID) references class(ClassID)
-)
+);
 
---Tạo bảng study
+
 create table study(
 	UserID varchar(4) Not Null,
 	SubjectID varchar(10) Not Null,
@@ -86,17 +66,17 @@ create table study(
 	Summary float,
 	primary key (UserID, SubjectID),
 	foreign key (UserID) references users(UserID),
-	foreign key (SubjectID) references subjects(SubjectID),
-)
+	foreign key (SubjectID) references subjects(SubjectID)
+);
 
---Tạo bảng messenger
+
 CREATE TABLE messenger (
-  MessID int NOT NULL IDENTITY(1,1),
+  MessID int NOT NULL AUTO_INCREMENT,
   FromID varchar(4) NOT NULL,
   ToID varchar(4) NOT NULL,
-  MessContent Nvarchar(255) NOT NULL,
+  MessContent varchar(255) NOT NULL,
   MessTime datetime NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (MessID,FromID,ToID),
   FOREIGN KEY (ToID) REFERENCES users(UserID),
   FOREIGN KEY (FromID) REFERENCES users(UserID)
-)
+);
