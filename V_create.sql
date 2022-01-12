@@ -26,6 +26,13 @@ as
 
 
 
+-- View lấy ra môn học của một lớp
+create view v_subjectsOfClass as
+select ClassID, subjects.SubjectID, SubjectName, SubjectType from subjects, teach
+where teach.SubjectID = subjects.subjectID
+
+
+
 -- Thêm account mới -> thêm 1 profile mới
 -- Thêm Account học sinh mới -> thêm tất cả bảng điểm
 create trigger add_user
@@ -43,7 +50,7 @@ instead of insert as
 		if(@UserRole = N'Học sinh')
 			begin
 				insert into study(UserID, SubjectID) select UserID, SubjectID 
-				from dbo.get_subjectsOfClass(@ClassID) as sb, inserted where inserted.ClassID = sb.ClassID;
+				from subjectsOfClass as sc, inserted where inserted.ClassID = sc.ClassID;
 			end
 	end
 
@@ -69,17 +76,17 @@ instead of delete as
 		declare @UserID varchar(4), @Role Nvarchar(20);
 		select @UserID = UserID, @Role = UserRole from deleted;
 
-		delete from profiles where UserID = @UserID;
-		delete from messenger where FromID = @UserID or ToID = @UserID;
+		delete from profiles where UserID in (select UserID from deleted);
+		delete from messenger where FromID in (select UserID from deleted) or ToID in (select UserID from deleted);
 		if @Role = N'Học sinh'
 			begin
-				delete from study where UserID = @UserID;
+				delete from study where UserID in (select UserID from deleted);
 			end
 		else if @Role = N'Giáo viên'
 			begin
-				delete from teach where UserID = @UserID;
+				delete from teach where UserID in (select UserID from deleted);
 			end
-		delete from users where UserID = @UserID;
+		delete from users where UserID in (select UserID from deleted);
 	end
 
 delete from users where UserName = 'haicaiten'
@@ -91,13 +98,14 @@ create trigger update_scores
 on study
 after update as
 	begin
+	if (update(Coef_one) or update(Coef_two) or update(Coef_three) or update(summary))
 		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
 		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
 	end
 
-update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '1001' and SubjectID = N'Toan10';
+update study set summary = 10 where UserID = '1001'
 
-
+select * from study where UserID ='1001'
 
 -- Xóa Thông tin cá nhân -> xóa người dùng
 create trigger update_users

@@ -2,6 +2,7 @@ use thpt_vap;
 --V
 drop view v_studentsOfTeachers;
 drop view v_users_profiles;
+drop view v_subjectsOfClass;
 drop function get_subjectsOfClass;
 drop function get_avgAllScore;
 drop function f_evaluate;

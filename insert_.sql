@@ -78,34 +78,19 @@ ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
 ('1001', 'haicaiten', N'Hai Cái Tên', '$2y$10$XTlO2yj.YPUFVxt.H.ZAyORpJAPFYK.Pz5zHLMvFz8ytNcd3aybd6', '1001@e.vap.edu.vn', '00000000', N'Hà Nội', N'Nam', '2006-03-05', N'Học sinh', '2021A1'),
 ('1003', 'phanhongminh109', N'Phan Hồng Minh', '$2y$10$XTlO2yj.YPUFVxt.H.ZAyORpJAPFYK.Pz5zHLMvFz8ytNcd3aybd6', '1003@e.vap.edu.vn', '976653434', N'Hà Nội', N'Nam', '2006-03-05', N'Học sinh', '2021A1'),
 ('1004', 'dangbaophuc112', N'Đặng Bảo Phúc', '$2y$10$Tmo3vJu6oK9A6KE7Vwj3xOiOIk3h99RDq3pEofGJspaVmrpVsaWXq', '1004@e.vap.edu.vn', '345432322', N'Hà Nội', N'Nam', '2006-03-30', N'Học sinh', '2021A1'),
-('1005', 'nguyenngochoanganh115', N'Nguyễn Ngọc Hoàng Anh', '$2y$10$KesW6PB08Aoxgea7V2OGpexw.bM7gb1XxSb1hMvc48eato3E4mvbS', '1005@e.vap.edu.vn', '7865432343', N'Hà Nội', N'Nam', '2006-03-05', N'Học sinh', '2021A1');
-
-insert into v_users_profiles(UserID, UserName, ProName, UserPassword, UserEmail, 
-ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
-('1006', 'dominhbaochau118', N'Đỗ Minh Bảo Châu', '$2y$10$WRtustJXq1flFGOtUghRfez/zp1NXlCZR7thwqmRGMzbzrJ0/kEvW', '1006@e.vap.edu.vn', '809876543', N'Hà Nội', N'Nam', '2006-09-05', 'Học sinh', N'2021A2'),
-('1007', 'nguyenthihuonggiang127', N'Nguyễn Thị Hương Giang', '$2y$10$8GlNTaUoESbhJh0x5jqmD.Q65GKXDVvmWHGFNSIoWVe1/pEZfLhze', '1007@e.vap.edu.vn', '987654321', N'Hà Nội', N'Nữ', '2006-10-15', N'Học sinh', '2021A2');
-
-insert into v_users_profiles(UserID, UserName, ProName, UserPassword, UserEmail, 
-ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
+('1005', 'nguyenngochoanganh115', N'Nguyễn Ngọc Hoàng Anh', '$2y$10$KesW6PB08Aoxgea7V2OGpexw.bM7gb1XxSb1hMvc48eato3E4mvbS', '1005@e.vap.edu.vn', '7865432343', N'Hà Nội', N'Nam', '2006-03-05', N'Học sinh', '2021A1'),
+('1006', 'dominhbaochau118', N'Đỗ Minh Bảo Châu', '$2y$10$WRtustJXq1flFGOtUghRfez/zp1NXlCZR7thwqmRGMzbzrJ0/kEvW', '1006@e.vap.edu.vn', '809876543', N'Hà Nội', N'Nam', '2006-09-05', N'Học sinh', N'2021A2'),
+('1007', 'nguyenthihuonggiang127', N'Nguyễn Thị Hương Giang', '$2y$10$8GlNTaUoESbhJh0x5jqmD.Q65GKXDVvmWHGFNSIoWVe1/pEZfLhze', '1007@e.vap.edu.vn', '987654321', N'Hà Nội', N'Nữ', '2006-10-15', N'Học sinh', '2021A2'),
 ('1008', 'chuquocanh128', N'Chu Quốc Anh', '$2y$10$v5Fuablcy9L9gGIaaM6pau3LXApvXlz9U0xHL7SjycMLNisrdJXrS', '1008@e.vap.edu.vn', '765432137', N'Hà Nội', N'Nam', '2005-02-15', N'Học sinh', '2020A1'),
 ('1009', 'phanvannam129', N'Phan Văn Nam', '$2y$10$Zo6TAgeaYwz5HL5Jowz4Z.s66ZXTFNIZ7r.SDq6QTOiQfsi9tIw.W', '1009@e.vap.edu.vn', '765432135', N'Hà Nội', N'Nam', '2005-05-15', N'Học sinh', '2020A1'),
 ('1010', 'phamlinhtrang130', N'Phạm Linh Trang', '$2y$10$T2svJ.ok1cCufnWIa/rBGuiSekCJU1KVasYSW6iSH6J3LtPtux0XK', '1010@e.vap.edu.vn', '765432243', N'Hà Nội', N'Nữ', '2005-12-30', N'Học sinh', '2020A1'),
-('1011', 'duongchiphat131', N'Dương Chi Phát', '$2y$10$bJRi.BBlpXE0Eka.NVYdsOPA7XOWtdWRORYplptT40VkPjAGJD.K.', '1011@e.vap.edu.vn', '985678422', N'Hà Nội', N'Nam', '2005-09-15', N'Học sinh', '2020A1');
-
-insert into v_users_profiles(UserID, UserName, ProName, UserPassword, UserEmail, 
-ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
+('1011', 'duongchiphat131', N'Dương Chi Phát', '$2y$10$bJRi.BBlpXE0Eka.NVYdsOPA7XOWtdWRORYplptT40VkPjAGJD.K.', '1011@e.vap.edu.vn', '985678422', N'Hà Nội', N'Nam', '2005-09-15', N'Học sinh', '2020A1'),
 ('1012', 'laitrucmy132', N'Lại Trúc Mỹ', '$2y$10$enCcNCpH1JI4pO.fguw0W.DavB8llxLrT8uzzLV9gF/MgkRjkNeLW', '1012@e.vap.edu.vn', '985678556', N'Hà Nội', N'Nữ', '2005-08-08', N'Học sinh', '2020A2'),
-('1013', 'truonggiaky133', N'Trương Gia Kỳ', '$2y$10$NNdEEcd3dk2A6ChLgEVvxeNiy7PaJAG0jRvwU37sXBTrFoo2UiDxq', '1013@e.vap.edu.vn', '985678690', N'Thái Bình', N'Nữ', '2005-04-01', N'Học sinh', '2020A2');
-
-insert into v_users_profiles(UserID, UserName, ProName, UserPassword, UserEmail, 
-ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
+('1013', 'truonggiaky133', N'Trương Gia Kỳ', '$2y$10$NNdEEcd3dk2A6ChLgEVvxeNiy7PaJAG0jRvwU37sXBTrFoo2UiDxq', '1013@e.vap.edu.vn', '985678690', N'Thái Bình', N'Nữ', '2005-04-01', N'Học sinh', '2020A2'),
 ('1014', 'letrongduong134', N'Lê Trọng Dương', '$2y$10$IYcn.yhNtJi8ZHLhkkacdOjzHHxOnSTUo5DSffRq4pharx739IXX2', '1014@e.vap.edu.vn', '985678824', N'Hà Nội', N'Nam', '2004-02-15', N'Học sinh', '2019A1'),
 ('1015', 'lygiahan135', N'Lý Gia Hân', '$2y$10$PIyHCWnSicvZd/SAiWZl8OLU5W59/tDNDs9dIcSy3obvVUVxpJA6a', '1015@e.vap.edu.vn', '985678958', N'Hà Nội', N'Nữ', '2004-02-07', N'Học sinh', '2019A1'),
 ('1016', 'letuyetlinh136', N'Lê Tuyết Linh', '$2y$10$7VkvVc2azk.2PRYAN2UTuuGzDgZ63oDjlJHw7gM77QLSFtp9G56SC', '1016@e.vap.edu.vn', '985679092', N'Hà Nội', N'Nữ', '2004-06-07', N'Học sinh', '2019A1'),
-('1017', 'nguyennhunganh137', N'Nguyễn Nhung Anh', '$2y$10$ViURYJZAEkiRFyLYbZPFo.JD.3bBuK934TJSO7DQyUo7wR993gV9S', '1017@e.vap.edu.vn', '987654324', N'Hà Nội', N'Nữ', '2004-10-17', N'Học sinh', '2019A1');
-
-insert into v_users_profiles(UserID, UserName, ProName, UserPassword, UserEmail, 
-ProPhone, ProAddress, ProGender, ProBirth, UserRole, ClassID) values
+('1017', 'nguyennhunganh137', N'Nguyễn Nhung Anh', '$2y$10$ViURYJZAEkiRFyLYbZPFo.JD.3bBuK934TJSO7DQyUo7wR993gV9S', '1017@e.vap.edu.vn', '987654324', N'Hà Nội', N'Nữ', '2004-10-17', N'Học sinh', '2019A1'),
 ('1002', 'trannamphong108', N'Trần Nam Phong', '$2y$10$SCYAxXjNgv3J6d7OiDOIXOeuQwrYldzEjcI2uNlCBIH.dXx4Dmv2K', '1002@e.vap.edu.vn', '965432345', N'Hà Nội', N'Nam', '2004-01-01', N'Học sinh', '2019A2'),
 ('1018', 'laihoanghiepquang138', N'Lại Hoàng Hiệp Quang', '$2y$10$9LHOzFEvqLS1P/KaPtkMheeBazSYM9bQhxkeZd6/unignDMPPIF8.', '1018@e.vap.edu.vn', '987654578', N'Hà Nội', N'Nam', '2004-07-27', N'Học sinh', '2019A2');
 
