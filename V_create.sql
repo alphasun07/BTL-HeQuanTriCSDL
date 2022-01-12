@@ -15,11 +15,11 @@ select * from v_users_profiles
 -- Hàm lấy ra tất cả các môn học được dạy trong một lớp (tham số đầu vào là ID lớp)
 create function get_subjectsOfClass(@ClassID varchar(10))
 returns @subjectOfClass table
-(SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
+(ClassID varchar(10), SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
 as
 	begin
 		insert into @subjectOfClass
-		select subjects.SubjectID, SubjectName, SubjectType from subjects, teach
+		select ClassID, subjects.SubjectID, SubjectName, SubjectType from subjects, teach
 		where ClassID = @ClassID and teach.SubjectID = subjects.subjectID
 		return
 	end
@@ -42,8 +42,8 @@ instead of insert as
 		
 		if(@UserRole = N'Học sinh')
 			begin
-				insert into study(UserID, SubjectID) select UserID = @UserID, SubjectID 
-				from dbo.get_subjectsOfClass(@ClassID);
+				insert into study(UserID, SubjectID) select UserID, SubjectID 
+				from dbo.get_subjectsOfClass(@ClassID) as sb, inserted where inserted.ClassID = sb.ClassID;
 			end
 	end
 
@@ -176,14 +176,25 @@ from teach, users, study where teach.ClassID = users.ClassID and users.UserID = 
 
 
 
--- Thủ tục cập nhật đánh giá cho người dùng
-create proc sp_updateEvaluate @UserID varchar(4), @ClassID varchar(10) as
+-- Thủ tục cập nhật đánh giá cho Học sinh theo lớp
+create proc sp_updateEvaluate_class @ClassID varchar(10) as
 	begin
 		update profiles set evaluate = dbo.f_evaluate(profiles.UserID) from users
-		where (profiles.UserID = @UserID or users.ClassID = @ClassID) and profiles.UserID = users.UserID
+		where (users.ClassID = @ClassID) and profiles.UserID = users.UserID
 	end
 
-exec sp_updateEvaluate '1', '2021A1'
+exec sp_updateEvaluate_class '2021A1'
+
+
+
+-- Thủ tục cập nhật đánh giá cho Học sinh theo lớp
+create proc sp_updateEvaluate_user @UserID varchar(4) as
+	begin
+		update profiles set evaluate = dbo.f_evaluate(profiles.UserID)
+		where (profiles.UserID = @UserID)
+	end
+
+exec sp_updateEvaluate_user '0001'
 
 
 
