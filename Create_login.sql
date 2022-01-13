@@ -6,4 +6,4 @@ use thpt_vap
 
 exec sp_grantdbaccess 'connect_sa','SA'
 
-exec sp_addrolemember 'db_datawriter','SA'
+exec sp_addrolemember 'db_owner','SA'

@@ -67,7 +67,7 @@ begin
 	return @SiSo
 end
 	
-select dbo.f_SiSoHocSinh('2020A1')
+select dbo.f_SiSoHocSinh('2021A2')
 
 select * from dbo.f_SiSoHocSinh()
 drop function f_SiSoHocSinh
@@ -79,13 +79,14 @@ Create procedure sp_SiSoNhieu
 @SiSo int, @dsss cursor varying output
 as begin
 set @dsss=cursor for
-	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) <= @SiSo order by SiSo asc
+	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) <= @SiSo
 open @dsss
 end
 
 declare @contro_sp cursor;
-exec sp_SiSoNhieu 0, @contro_sp out;
+exec sp_SiSoNhieu 5, @contro_sp out;
 Fetch Next from @contro_sp
+while (@@FETCH_STATUS = 0)
 begin
 	Fetch Next from @contro_sp
 end
