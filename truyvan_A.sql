@@ -42,7 +42,7 @@ as
 		return @DiemTrungBinh
 	end
 
-select dbo.f_DiemTrungBinh('1001', 'toan10')
+select dbo.f_DiemTrungBinh('1001', 'toan10') as DiemTrungBinh
 
 
 --2.Viết một hàm f_DiemTrungBinh trả về một bảng chi tiết họ tên, lớp, điểm số 1, điểm số 2, điểm số 3 và số điểm trung bình của 1 học sinh 
@@ -71,7 +71,7 @@ begin
 	return @SiSo
 end
 	
-select dbo.f_SiSoHocSinh('2020A1')
+select dbo.f_SiSoHocSinh('2020A1') as SiSoHocSinh
 
 select * from dbo.f_SiSoHocSinh()
 drop function f_SiSoHocSinh
@@ -88,13 +88,15 @@ open @dsss
 end
 
 declare @contro_sp cursor;
-exec sp_SiSoNhieu 0, @contro_sp out;
+exec sp_SiSoNhieu 6, @contro_sp out;
 Fetch Next from @contro_sp
+while(@@FETCH_STATUS = 0)
 begin
 	Fetch Next from @contro_sp
 end
 close @contro_sp
 deallocate @contro_sp
+
 
 --2.Viết 1 thủ tục số lượng tin nhắn đã đc gửi đi & nhận về từ ngày nào đó -> ngày
 Create proc sp_SoLuongTinNhan
@@ -106,7 +108,7 @@ Create proc sp_SoLuongTinNhan
 	end
  
  declare @tn1 int;
- exec sp_SoLuongTinNhan '1001', '2021-1-12', '2021-12-12', @tn1 out
+ exec sp_SoLuongTinNhan '1007', '2021-12-12', '2022-1-14', @tn1 out
  print N'Số lượng tin nhắn là: ' +  cast(@tn1 as Nvarchar )
 
  drop proc sp_SoLuongTinNhan
@@ -117,28 +119,30 @@ Create proc sp_SoLuongTinNhan
 -- Xóa user -> xóa profile, xóa message
 -- Học sinh -> xóa điểm
 -- Giáo viên -> xóa teach
- create trigger del_user
-on users
+create trigger del_user
+on v_users_profiles
 instead of delete as
 	begin
-		print N'Xóa thành công'
+	
 		declare @UserID varchar(4), @Role Nvarchar(20);
 		select @UserID = UserID, @Role = UserRole from deleted;
 
-		delete from profiles where UserID = @UserID;
-		delete from messenger where FromID = @UserID or ToID = @UserID;
+		delete from profiles where UserID in (select UserID from deleted);
+		delete from messenger where FromID in (select UserID from deleted) or ToID in (select UserID from deleted);
 		if @Role = N'Học sinh'
 			begin
-				delete from study where UserID = @UserID;
+				delete from study where UserID in (select UserID from deleted);
 			end
 		else if @Role = N'Giáo viên'
 			begin
-				delete from teach where UserID = @UserID;
+				delete from teach where UserID in (select UserID from deleted);
 			end
-		delete from users where UserID = @UserID;
+		delete from users where UserID in (select UserID from deleted);
+		print 'Xóa thành công';
 	end
+	
 
-delete from users where UserName = 'haicaiten'
+delete from v_users_profiles where UserName = 'haicaiten'
 
 
 -- Sua diem -> sua lai tong diem
@@ -146,10 +150,13 @@ create trigger update_scores
 on study
 after update as
 	begin
-		print N'Cập nhật điểm thành công'
+	if (update(Coef_one) or update(Coef_two) or update(Coef_three) or update(summary))
 		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
 		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
+
 	end
 
-update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '1001' and SubjectID = N'Toan10';
+update study set coef_one = 10 where UserID = '1002' and SubjectID = 'van12'
+
+select * from study where UserID ='1001'
 
