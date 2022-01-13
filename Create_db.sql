@@ -3,15 +3,15 @@ drop database thpt_vap
 -- Tạo cơ sở dũ liệu, file dữ liệu + file nhật ký
 create database thpt_vap
 on primary (
-Name=QLNA_data,
-Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTTH\THPT_data.mdf',
+Name=THPT_data,
+Filename= 'D:\Hệ quản trị CSDL\btl\THPT_data.mdf',
 size=10MB,
 maxsize=50MB,
 filegrowth =2MB)
 
 log on (
-Name=QLNA_log,
-Filename= 'C:\Users\vinhv\Downloads\HQTCSDL\BTTH\THPT_log.ldf',
+Name=THPT_log,
+Filename= 'D:\Hệ quản trị CSDL\btl\THPT_log.ldf',
 size=5MB,
 maxsize=20MB,
 filegrowth =1MB);
