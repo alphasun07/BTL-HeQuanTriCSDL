@@ -15,14 +15,21 @@ select * from v_users_profiles
 -- Hàm lấy ra tất cả các môn học được dạy trong một lớp (tham số đầu vào là ID lớp)
 create function get_subjectsOfClass(@ClassID varchar(10))
 returns @subjectOfClass table
-(SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
+(ClassID varchar(10), SubjectID varchar(10), SubjectName Nvarchar(60), SubjectType Nvarchar(60))
 as
 	begin
 		insert into @subjectOfClass
-		select subjects.SubjectID, SubjectName, SubjectType from subjects, teach
+		select ClassID, subjects.SubjectID, SubjectName, SubjectType from subjects, teach
 		where ClassID = @ClassID and teach.SubjectID = subjects.subjectID
 		return
 	end
+
+
+
+-- View lấy ra môn học của một lớp
+create view v_subjectsOfClass as
+select ClassID, subjects.SubjectID, SubjectName, SubjectType from subjects, teach
+where teach.SubjectID = subjects.subjectID
 
 
 
@@ -42,8 +49,8 @@ instead of insert as
 		
 		if(@UserRole = N'Học sinh')
 			begin
-				insert into study(UserID, SubjectID) select UserID = @UserID, SubjectID 
-				from dbo.get_subjectsOfClass(@ClassID);
+				insert into study(UserID, SubjectID) select UserID, SubjectID 
+				from subjectsOfClass as sc, inserted where inserted.ClassID = sc.ClassID;
 			end
 	end
 
@@ -69,17 +76,17 @@ instead of delete as
 		declare @UserID varchar(4), @Role Nvarchar(20);
 		select @UserID = UserID, @Role = UserRole from deleted;
 
-		delete from profiles where UserID = @UserID;
-		delete from messenger where FromID = @UserID or ToID = @UserID;
+		delete from profiles where UserID in (select UserID from deleted);
+		delete from messenger where FromID in (select UserID from deleted) or ToID in (select UserID from deleted);
 		if @Role = N'Học sinh'
 			begin
-				delete from study where UserID = @UserID;
+				delete from study where UserID in (select UserID from deleted);
 			end
 		else if @Role = N'Giáo viên'
 			begin
-				delete from teach where UserID = @UserID;
+				delete from teach where UserID in (select UserID from deleted);
 			end
-		delete from users where UserID = @UserID;
+		delete from users where UserID in (select UserID from deleted);
 	end
 
 delete from users where UserName = 'haicaiten'
@@ -91,13 +98,14 @@ create trigger update_scores
 on study
 after update as
 	begin
+	if (update(Coef_one) or update(Coef_two) or update(Coef_three) or update(summary))
 		update study set summary = dbo.f_DiemTrungBinh(inserted.UserID, inserted.SubjectID) 
 		from inserted where study.UserID = inserted.UserID and study.SubjectID = inserted.SubjectID;
 	end
 
-update study set Coef_one = 10, Coef_two = 9, Coef_three = 9 where UserID = '1001' and SubjectID = N'Toan10';
+update study set summary = 10 where UserID = '1001'
 
-
+select * from study where UserID ='1001'
 
 -- Xóa Thông tin cá nhân -> xóa người dùng
 create trigger update_users
@@ -176,14 +184,25 @@ from teach, users, study where teach.ClassID = users.ClassID and users.UserID = 
 
 
 
--- Thủ tục cập nhật đánh giá cho người dùng
-create proc sp_updateEvaluate @UserID varchar(4), @ClassID varchar(10) as
+-- Thủ tục cập nhật đánh giá cho Học sinh theo lớp
+create proc sp_updateEvaluate_class @ClassID varchar(10) as
 	begin
 		update profiles set evaluate = dbo.f_evaluate(profiles.UserID) from users
-		where (profiles.UserID = @UserID or users.ClassID = @ClassID) and profiles.UserID = users.UserID
+		where (users.ClassID = @ClassID) and profiles.UserID = users.UserID
 	end
 
-exec sp_updateEvaluate '1', '2021A1'
+exec sp_updateEvaluate_class '2021A1'
+
+
+
+-- Thủ tục cập nhật đánh giá cho Học sinh theo lớp
+create proc sp_updateEvaluate_user @UserID varchar(4) as
+	begin
+		update profiles set evaluate = dbo.f_evaluate(profiles.UserID)
+		where (profiles.UserID = @UserID)
+	end
+
+exec sp_updateEvaluate_user '0001'
 
 
 
