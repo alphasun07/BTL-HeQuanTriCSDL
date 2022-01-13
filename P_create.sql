@@ -1,22 +1,24 @@
 ﻿
 --1: Viết hàm tách tên từ chuỗi Họ tên người dùng --
-CREATE  FUNCTION  TACHTEN(@UserName nvarchar(60))
+CREATE  FUNCTION  TACHTEN(@ProName nvarchar(60))
 RETURNS  nvarchar(30) 
 AS 
 BEGIN 
 DECLARE  @ten varchar(10), @L int, @i int,@j int,@kt varchar(10) 
-SET @L=LEN(@UserName) 
+SET @L=LEN(@ProName) 
 SET @i=1 
 WHILE  @i<=@L 
 BEGIN 
-SET @kt=SUBSTRING(@UserName,@i,1) 
+SET @kt=SUBSTRING(@ProName,@i,1) 
 IF @kt=''  SET  @j=@i 
 SET @i=@i+1 
 END 
-SET @ten=SUBSTRING(@UserName,@j+1,10) 
+SET @ten=SUBSTRING(@ProName,@j+1,10) 
 RETURN  @ten 
 END 
 
+select dbo.TACHTEN(N'Đặng Quang Vinh')
+drop function tachten
 /*2:Viết hàm đọc tên Khối ra thành chữ tương ứng */
 CREATE FUNCTION DOCKHOINGUYEN(@ClassGrade int)  
 RETURNS nvarchar(20) 
@@ -59,10 +61,10 @@ INSERT INTO  users
 VALUES (@UserID, @UserName, @UserPassword, @UserEmail, @UserStatus, @UserCode, @UserRole, @ClassID) 
 END 
 
-  
+ exec INSERT_users '1000', N'bacaiten', N'TRẦN THỊ PHÚC', 'Tranphucnm@gmail.com', 1, NULL, N' học sinh', '2020A2'
 
-
---viết thủ tục xóa giáo viên, khi thực hiện xóa giáo viên thì bảng điểm của học sinh vẫn còn--
+ select * from users where UserID= '1000'
+ --viết thủ tục xóa giáo viên, khi thực hiện xóa giáo viên thì bảng điểm của học sinh vẫn còn--
 CREATE PROCEDURE DELETE_USERID
 @USERID varchar(11) 
 as 
@@ -77,16 +79,21 @@ DELETE FROM USERS WHERE USERID=@USERID
 PRINT N'Xoá thành công' 
 END 
 
+EXEC DELETE_USERID '0001'
+select * from users where UserID ='0001'
 --view--
---tạo view user_class--
-create view v_users_class(UserID, UserName, UserPassword, UserEmail, 
-UserStatus, UserCode, UserRole, ClassID, ClassName, ClassGrade)
+--tạo view user_messenger--
+create view v_users_messeger(UserID, UserName, UserPassword, UserEmail, 
+UserStatus, UserCode, UserRole, ClassID, MessID, FromID, ToID, MessContent, MessTime)
 AS 
-select * from users, class where users.ClassID = class.ClassID;
+select * from users, messenger where users.UserID = messenger.FromID ;
 
---tạo view user_teach_subject--
-create view user_teach_subject(UserID, UserName, UserPassword, UserEmail, 
-UserStatus, UserCode, UserRole, ClassID, subjectID, SubjectName, SubjectType)
+SELECT * FROM v_users_messeger
+
+
+--tạo view v_user_teach_subject--
+create view v_user_teach_subject(UserID, UserName, UserPassword, UserEmail, 
+UserStatus, UserCode, UserRole, ClassID, UserIDD, SubjectID, ClassIDD, SubjectIDD, SubjectName, SubjectType)
 AS
 SELECT * FROM users, teach, subjects where users.UserID = Teach.UserID and Teach.SubjectID = Subjects.SubjectID;
 
