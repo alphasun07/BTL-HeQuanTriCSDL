@@ -50,7 +50,7 @@ instead of insert as
 		if(@UserRole = N'Học sinh')
 			begin
 				insert into study(UserID, SubjectID) select UserID, SubjectID 
-				from subjectsOfClass as sc, inserted where inserted.ClassID = sc.ClassID;
+				from v_subjectsOfClass as sc, inserted where inserted.ClassID = sc.ClassID;
 			end
 	end
 
@@ -70,7 +70,7 @@ alter table Profiles Add Constraint KTGioiTinh Check (ProGender=N'Nam' or ProGen
 -- Học sinh -> xóa điểm
 -- Giáo viên -> xóa teach
 create trigger del_user
-on users
+on v_users_profiles
 instead of delete as
 	begin
 		declare @UserID varchar(4), @Role Nvarchar(20);
@@ -89,7 +89,7 @@ instead of delete as
 		delete from users where UserID in (select UserID from deleted);
 	end
 
-delete from users where UserName = 'haicaiten'
+delete from v_users_profiles where UserName = 'haicaiten'
 
 
 

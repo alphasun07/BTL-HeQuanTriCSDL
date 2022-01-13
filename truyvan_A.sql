@@ -74,12 +74,12 @@ drop function f_SiSoHocSinh
 
 
 --PROCEDURE
---1. Thủ tục lấy ra sĩ số của các lớp có sĩ số > x(với x là đầu vào) dưới dạng con trỏ
+--1. Thủ tục lấy ra sĩ số của các lớp có sĩ số < x(với x là đầu vào) dưới dạng con trỏ
 Create procedure sp_SiSoNhieu
 @SiSo int, @dsss cursor varying output
 as begin
 set @dsss=cursor for
-	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) >= @SiSo order by SiSo asc
+	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) <= @SiSo order by SiSo asc
 open @dsss
 end
 
