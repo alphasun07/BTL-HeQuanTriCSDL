@@ -9,6 +9,10 @@ where c.ClassID = u.ClassID and u.UserID = p.UserID
 
 select * from v_studentsOfClass
 
+select * from users
+select * from class
+select * from profiles
+
 --2.Tạo view v_scoresOfStudent để hiển thị thông tin của học sinh và môn học gồm UserID, UserName, ClassName, SubjectName, SubjectType,
 -- cofe_one, Coef_two, Cofe_three, Summary, Conduct
 create view v_scoresOfStudent(UserID, UserName, ClassID, ClassName, SubjectID, SubjectName, SubjectType, Coef_one, Coef_two, Coef_three, Summary)
@@ -103,7 +107,7 @@ Create proc sp_SoLuongTinNhan
  
  declare @tn1 int;
  exec sp_SoLuongTinNhan '1001', '2021-1-12', '2021-12-12', @tn1 out
- print 'Số lượng tin nhắn là: ' +  @tn1
+ print N'Số lượng tin nhắn là: ' +  cast(@tn1 as Nvarchar )
 
  drop proc sp_SoLuongTinNhan
 
