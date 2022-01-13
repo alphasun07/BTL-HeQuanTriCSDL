@@ -143,6 +143,7 @@ where teach.SubjectID = subjects.subjectID
 create view v_studentsOfTeachers(teacherID, studentID, SubjectID, summary) as
 select distinct teach.UserID as teacherID, users.UserID as studentID, study.SubjectID, study.Summary 
 from teach, users, study where teach.ClassID = users.ClassID and users.UserID = study.UserID;
+<<<<<<< HEAD
 --6:tạo view user_messenger--
 create view v_users_messeger(UserID, UserName, UserPassword, UserEmail, 
 UserStatus, UserCode, UserRole, ClassID, MessID, FromID, ToID, MessContent, MessTime)
@@ -157,6 +158,8 @@ create view v_user_teach_subject(UserID, UserName, UserPassword, UserEmail,
 UserStatus, UserCode, UserRole, ClassID, UserIDD, SubjectID, ClassIDD, SubjectIDD, SubjectName, SubjectType)
 AS
 SELECT * FROM users, teach, subjects where users.UserID = Teach.UserID and Teach.SubjectID = Subjects.SubjectID;
+=======
+>>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 
 --FUNCTION
@@ -257,6 +260,7 @@ returns nvarchar(50) as
 
 select dbo.f_evaluate('0001')
 
+<<<<<<< HEAD
 --6: Viết hàm tách tên từ chuỗi Họ tên người dùng --
 CREATE  FUNCTION  TACHTEN(@ProName nvarchar(60))
 RETURNS  nvarchar(30) 
@@ -291,6 +295,9 @@ END
 RETURN  @khoichu
 end
 DROP FUNCTION DOCKHOINGUYEN
+=======
+
+>>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 --PROCEDURE
 
 --1. Thủ tục lấy ra sĩ số của các lớp có sĩ số < x(với x là đầu vào) dưới dạng con trỏ
@@ -365,6 +372,7 @@ while (@@FETCH_STATUS = 0)
 	end
 close @matchedList;
 deallocate @matchedList;
+<<<<<<< HEAD
 --6:Tạo thủ tục bổ sung dữ liệu cho bảng users--
 
 select*from Users
@@ -413,6 +421,9 @@ exec DiemTBcaonhat N'anh 10' , @dtb out , @hoten out
 print N'Học sinh ' + cast(@hoten as nvarchar(30)) + N' có DTB cao nhất môn là: ' + cast(@dtb as char(4))
 
 select*from subjects
+=======
+
+>>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 --TRIGGER
  
@@ -501,6 +512,7 @@ for update as
 	end
 
 update users set UserName = 'iamveoveo' where UserID = '0001';
+<<<<<<< HEAD
 --5: Viết trigger insert bảng teach, 
 --nếu người dùng có mã userrole là giáo viên thì thông báo insert thành công
 --còn không thì thông báo lỗi.
@@ -552,6 +564,8 @@ select * from study
 insert into study values ( '1007','anh10', '7', '2', '5', '8.3'),
 ( '1005','anh10', '7', '2', '5', '4.3'),( '1006','anh10', '7', '2', '5', '9.3')
 delete from study
+=======
+>>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 
 --BẢO MẬT, PHÂN QUYỀN
