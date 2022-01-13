@@ -83,7 +83,7 @@ Create procedure sp_SiSoNhieu
 @SiSo int, @dsss cursor varying output
 as begin
 set @dsss=cursor for
-	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) <= @SiSo order by SiSo asc
+	select ClassID, ClassName, ClassGrade, SiSo = dbo.f_SiSoHocSinh(ClassID) from Class where dbo.f_SiSoHocSinh(ClassID) <= @SiSo
 open @dsss
 end
 

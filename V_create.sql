@@ -107,7 +107,7 @@ update study set summary = 10 where UserID = '1001'
 
 select * from study where UserID ='1001'
 
--- Xóa Thông tin cá nhân -> xóa người dùng
+-- Tay đổi tên tài khoản -> không thể thay đổi
 create trigger update_users
 on users
 for update as
@@ -195,7 +195,7 @@ exec sp_updateEvaluate_class '2021A1'
 
 
 
--- Thủ tục cập nhật đánh giá cho Học sinh theo lớp
+-- Thủ tục cập nhật đánh giá người dùng
 create proc sp_updateEvaluate_user @UserID varchar(4) as
 	begin
 		update profiles set evaluate = dbo.f_evaluate(profiles.UserID)
