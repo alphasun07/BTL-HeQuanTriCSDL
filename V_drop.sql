@@ -9,7 +9,8 @@ drop function f_evaluate;
 drop trigger add_user;
 drop trigger update_users;
 drop procedure sp_searchMatchMess;
-drop procedure sp_updateEvaluate;
+drop procedure sp_updateEvaluate_class;
+drop procedure sp_updateEvaluate_user;
 
 --A
 drop view v_studentsOfClass;
