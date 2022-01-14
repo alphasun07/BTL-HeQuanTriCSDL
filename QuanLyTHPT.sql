@@ -143,8 +143,9 @@ where teach.SubjectID = subjects.subjectID
 create view v_studentsOfTeachers(teacherID, studentID, SubjectID, summary) as
 select distinct teach.UserID as teacherID, users.UserID as studentID, study.SubjectID, study.Summary 
 from teach, users, study where teach.ClassID = users.ClassID and users.UserID = study.UserID;
-<<<<<<< HEAD
---6:tạo view user_messenger--
+
+
+--tạo view user_messenger--
 create view v_users_messeger(UserID, UserName, UserPassword, UserEmail, 
 UserStatus, UserCode, UserRole, ClassID, MessID, FromID, ToID, MessContent, MessTime)
 AS 
@@ -153,13 +154,11 @@ select * from users, messenger where users.UserID = messenger.FromID ;
 SELECT * FROM v_users_messeger
 
 
---7:tạo view v_user_teach_subject--
+--tạo view v_user_teach_subject--
 create view v_user_teach_subject(UserID, UserName, UserPassword, UserEmail, 
 UserStatus, UserCode, UserRole, ClassID, UserIDD, SubjectID, ClassIDD, SubjectIDD, SubjectName, SubjectType)
 AS
 SELECT * FROM users, teach, subjects where users.UserID = Teach.UserID and Teach.SubjectID = Subjects.SubjectID;
-=======
->>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 
 --FUNCTION
@@ -260,8 +259,8 @@ returns nvarchar(50) as
 
 select dbo.f_evaluate('0001')
 
-<<<<<<< HEAD
---6: Viết hàm tách tên từ chuỗi Họ tên người dùng --
+
+--1: Viết hàm tách tên từ chuỗi Họ tên người dùng --
 CREATE  FUNCTION  TACHTEN(@ProName nvarchar(60))
 RETURNS  nvarchar(30) 
 AS 
@@ -279,9 +278,9 @@ SET @ten=SUBSTRING(@ProName,@j+1,10)
 RETURN  @ten 
 END 
 
-select dbo.TACHTEN(N'TRAN DUC') as TACHTEN
+select dbo.TACHTEN(N'TRẦN đức bo') as táchten
 drop function tachten
-/*7:Viết hàm đọc tên Khối ra thành chữ tương ứng */
+/*2:Viết hàm đọc tên Khối ra thành chữ tương ứng */
 CREATE FUNCTION DOCKHOINGUYEN(@ClassGrade int)  
 RETURNS nvarchar(20) 
 AS 
@@ -294,10 +293,10 @@ WHEN @ClassGrade=12 THEN N'Khối mười hai'
 END 
 RETURN  @khoichu
 end
-DROP FUNCTION DOCKHOINGUYEN
-=======
 
->>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
+
+DROP FUNCTION DOCKHOINGUYEN
+
 --PROCEDURE
 
 --1. Thủ tục lấy ra sĩ số của các lớp có sĩ số < x(với x là đầu vào) dưới dạng con trỏ
@@ -372,11 +371,9 @@ while (@@FETCH_STATUS = 0)
 	end
 close @matchedList;
 deallocate @matchedList;
-<<<<<<< HEAD
---6:Tạo thủ tục bổ sung dữ liệu cho bảng users--
 
-select*from Users
 
+--Tạo thủ tục bổ sung dữ liệu cho bảng users--
 CREATE PROCEDURE  INSERT_users
 @UserID varchar(4), @UserName Nvarchar(60),  @UserPassword varchar(255), @UserEmail varchar(100), @UserStatus int, 
 @UserCode varchar(8), @UserRole Nvarchar(20), @ClassID varchar(10) 
@@ -403,7 +400,7 @@ END
 
  select * from users where UserID= '1000'
 
---7: Tạo thủ tục của học sinh có điểm trung bình cao nhất với tham số truyền vào là môn học
+-- Tạo thủ tục của học sinh có điểm trung bình cao nhất với tham số truyền vào là môn học
 create proc DiemTBcaonhat @tenmon nvarchar(10) , @diem float output, @ten nvarchar(30) output
 as 
 begin
@@ -421,9 +418,7 @@ exec DiemTBcaonhat N'anh 10' , @dtb out , @hoten out
 print N'Học sinh ' + cast(@hoten as nvarchar(30)) + N' có DTB cao nhất môn là: ' + cast(@dtb as char(4))
 
 select*from subjects
-=======
 
->>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 --TRIGGER
  
@@ -512,11 +507,11 @@ for update as
 	end
 
 update users set UserName = 'iamveoveo' where UserID = '0001';
-<<<<<<< HEAD
---5: Viết trigger insert bảng teach, 
+
+
+--1: Viết trigger insert bảng teach, 
 --nếu người dùng có mã userrole là giáo viên thì thông báo insert thành công
 --còn không thì thông báo lỗi.
-
 create or alter trigger InsertTeach
 on teach 
 for insert 
@@ -541,7 +536,7 @@ insert into teach values ('0002', 'van11', '2021A2')
 , ('1002', 'van11', '2021A2')
 delete from teach
 select* from teach
---6: Viết trigger insert bảng teach, 
+--2: Viết trigger insert bảng teach, 
 --nếu người dùng có mã userrole là giáo viên thì thông báo insert thành công
 --còn không thì thông báo lỗi.
 create or alter trigger InsertStudy
@@ -564,20 +559,83 @@ select * from study
 insert into study values ( '1007','anh10', '7', '2', '5', '8.3'),
 ( '1005','anh10', '7', '2', '5', '4.3'),( '1006','anh10', '7', '2', '5', '9.3')
 delete from study
-=======
->>>>>>> bc251909e72b9679bc64a47131ee81bf5e3bf79c
 
 
 --BẢO MẬT, PHÂN QUYỀN
-exec sp_addlogin 'connect_sa','123456'
-
-drop login connect_sa
-
 use thpt_vap
+
+--Tạo login cho admin với quyền là người sở hữu cơ sở dữ liệu(toàn quyền với cơ sở dữ liệu)
+exec sp_addlogin 'connect_sa','123456'
 
 exec sp_grantdbaccess 'connect_sa','SA'
 
 exec sp_addrolemember 'db_owner','SA'
+
+--Tạo login cho giáo viên với quyền là người có thể thêm sửa xóa vào cơ sở dữ liệu
+exec sp_addlogin 'sa_guest','qwưer'
+
+exec sp_grantdbaccess 'sa_guest','teacher'
+
+exec sp_addrole 'teachers'
+
+grant execute on get_avgAllScore to teachers
+grant execute on f_evaluate to teachers
+grant execute on sp_searchMatchMess to teachers
+grant execute on sp_updateEvaluate_class to teachers
+grant execute on sp_updateEvaluate_user to teachers
+grant execute on f_DiemTrungBinh to teachers
+grant execute on f_SiSoHocSinh to teachers
+grant execute on sp_SiSoNhieu to teachers
+grant execute on sp_SoLuongTinNhan to teachers
+grant execute on TACHTEN to teachers
+grant execute on DOCKHOINGUYEN to teachers
+grant execute on INSERT_users to teachers
+grant execute on DiemTBcaonhat to teachers
+
+exec sp_addrolemember 'db_datawriter','teacher'
+exec sp_addrolemember 'teachers','teacher'
+
+exec sp_droprolemember 'teachers','teacher'
+exec sp_revokedbaccess 'teacher'
+exec sp_droprole 'teachers' 
+
+--Tạo login cho học sinh với quyền là người truy suất dữ liệu từ cơ sở dữ liệu
+exec sp_addlogin 'sa_guest1','qwưer'
+
+exec sp_grantdbaccess 'sa_guest1','student'
+
+exec sp_addrole 'students'
+
+grant all on users to students
+grant all on profiles to students
+grant all on messenger to students
+grant select on study to students
+grant select on class to students
+grant select on subjects to students
+grant select on teach to students
+
+grant select on v_studentsOfTeachers to students
+grant all on v_users_profiles to students
+grant select on v_subjectsOfClass to students
+grant select on v_studentsOfClass to students
+grant select on v_scoresOfStudent to students
+grant all on v_users_messeger to students
+grant select on v_user_teach_subject to students
+
+grant execute on sp_searchMatchMess to students
+grant execute on sp_SoLuongTinNhan to students
+grant execute on sp_SiSoNhieu to students
+grant execute on f_DiemTrungBinh to students
+grant execute on DOCKHOINGUYEN to students
+grant execute on TACHTEN to students
+
+exec sp_addrolemember 'students','student'
+
+exec sp_droprolemember 'students','student'
+exec sp_revokedbaccess 'student'
+exec sp_droprole 'students' 
+
+--Chèn dữ liệu
 
 INSERT INTO class (ClassID, ClassName, ClassGrade) VALUES
 ('2021A1', N'10A1', 10),
@@ -794,5 +852,4 @@ INSERT INTO messenger(FromID, ToID, MessContent) VALUES
 ('1013', '0004', N'Mẹ chớ nghĩ ngợi bên này chúng con mến thương nhau'),
 ('0005', '1014', N'Một mai nắng xanh trời, rời nơi nương náu một thời'),
 ('1014', '0005', N'Về trong đôi mắt rạng ngời');
-
 

@@ -36,9 +36,6 @@ end
 
 DROP FUNCTION DOCKHOINGUYEN
 --Tạo thủ tục bổ sung dữ liệu cho bảng users--
-
-select*from Users
-
 CREATE PROCEDURE  INSERT_users
 @UserID varchar(4), @UserName Nvarchar(60),  @UserPassword varchar(255), @UserEmail varchar(100), @UserStatus int, 
 @UserCode varchar(8), @UserRole Nvarchar(20), @ClassID varchar(10) 
@@ -106,7 +103,6 @@ SELECT * FROM users, teach, subjects where users.UserID = Teach.UserID and Teach
 --1: Viết trigger insert bảng teach, 
 --nếu người dùng có mã userrole là giáo viên thì thông báo insert thành công
 --còn không thì thông báo lỗi.
-
 create or alter trigger InsertTeach
 on teach 
 for insert 

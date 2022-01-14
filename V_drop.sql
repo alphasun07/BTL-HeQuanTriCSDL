@@ -22,3 +22,13 @@ drop trigger update_scores;
 drop trigger del_user;
 drop procedure sp_SiSoNhieu;
 drop procedure sp_SoLuongTinNhan;
+
+--P
+drop FUNCTION TACHTEN;
+drop FUNCTION DOCKHOINGUYEN;
+drop PROCEDURE  INSERT_users;
+drop PROCEDURE DiemTBcaonhat;
+drop view v_users_messeger;
+drop view v_user_teach_subject;
+drop trigger InsertTeach;
+drop trigger InsertStudy;
